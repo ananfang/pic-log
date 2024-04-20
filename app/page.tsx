@@ -1,10 +1,23 @@
 'use client'
 
 import { useAuth } from "@/lib/context/authContext";
-import { Button, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Button, Text, VStack } from "@chakra-ui/react";
+import { useEffect } from "react";
+import PostButton from "./components/PostButton";
 
 export default function Home() {
-  const { currentUser, logInWithGoogle, logOut, errorMessage: authErrorMessage, isInitialized: authIsInitialized, isLoading: authIsLoading } = useAuth()
+  const { currentUser, logInWithGoogle, logOut, errorMessage: authErrorMessage, isInitialized: authIsInitialized, isLoading: authIsLoading, initialize: authInitialize } = useAuth()
+
+  useEffect(() => {
+    if (authErrorMessage) {
+      console.log(authErrorMessage)
+    }
+
+    if (!authIsInitialized) {
+      console.log('🍾 auth is not initialized')
+      authInitialize()
+    }
+  }, [])
 
   return (
     <VStack>
@@ -16,8 +29,10 @@ export default function Home() {
             (currentUser === null) ?
               <Button colorScheme='blue' size='xs' onClick={logInWithGoogle}>Login</Button> :
               <>
-                <Text>{currentUser.email} || {currentUser.displayName}</Text>
+                <Avatar name={currentUser.displayName ?? undefined} src={currentUser.photoURL ?? undefined} />
+                <Text>{currentUser.displayName}</Text>
                 <Button colorScheme='blue' size='xs' onClick={logOut}>Logout</Button>
+                <PostButton />
               </>
           }
         </>
