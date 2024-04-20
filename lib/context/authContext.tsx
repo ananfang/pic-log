@@ -3,7 +3,7 @@
 import { Unsubscribe, User, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
 import { GoogleAuthProvider } from "firebase/auth";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { firebaseAuth } from "../firebase/firebase";
+import { firebaseAuth } from "../firebase/firebase"
 
 type AuthContextType = {
     currentUser: User | null;
