@@ -38,7 +38,7 @@ exports.createpost = onDocumentCreated({
     }
 
     const prompt = `## Post Content
-${post}
+${content}
 
 ## Task
 Generate an illustration topic within 32 English characters based on above Post Content. Be creative, minimalist, and focus on describing how it will look, not the drawing style. If the content is unsafe for illustration, generate a safe and general illustration topic.`
