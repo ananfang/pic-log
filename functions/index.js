@@ -37,24 +37,22 @@ exports.createpost = onDocumentCreated({
         return
     }
 
-    const prompt = `## Content
-${content}
+    const prompt = `## Post Content
+${post}
 
 ## Task
-This is the content of a post, please come up with 3 emoji to be its reaction options. If the content is not SAFETY, just reply 🚨🚨🚨
-`
+Generate an illustration topic within 32 English characters based on above Post Content. Be creative, minimalist, and focus on describing how it will look, not the drawing style. If the content is unsafe for illustration, generate a safe and general illustration topic.`
     try {
         const result = await geminiModel.generateContent(prompt)
         const response = await result.response
         const text = response.text()
-        console.log('The results: ', text)
 
         const userId = event.params.userId
         const postId = event.params.postId
 
         const postRef = firestoreDB.doc(`users/${userId}/posts/${postId}`)
         await postRef.update({
-            emoji: text
+            topic: text
         })
 
         console.log('🤓 Post updated')
