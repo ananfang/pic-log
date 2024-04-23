@@ -1,9 +1,9 @@
 'use client'
 
-import { User, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
+import { Unsubscribe, User, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
 import { GoogleAuthProvider } from "firebase/auth";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { firebaseAuth } from "../firebase/firebase";
+import { firebaseAuth } from "../firebase/firebase"
 
 type AuthContextType = {
     currentUser: User | null;
@@ -12,6 +12,7 @@ type AuthContextType = {
     errorMessage: string | null;
     isInitialized: boolean;
     isLoading: boolean;
+    initialize: () => Unsubscribe;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -23,17 +24,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-            console.log('🙂‍↔️ Current user id: ', user?.uid)
-            setCurrentUser(user)
-            setIsInitialized(true)
-            setIsLoading(false)
-        })
+        const unsubscribe = initialize()
 
         return () => {
             unsubscribe()
         }
     }, [])
+
+    const initialize = () => {
+        return onAuthStateChanged(firebaseAuth, (user) => {
+            console.log('🙂‍↔️ Current user id: ', user?.uid)
+            setCurrentUser(user)
+            setIsInitialized(true)
+            setIsLoading(false)
+        })
+    }
 
     const logInWithGoogle = async () => {
         setErrorMessage(null)
@@ -65,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ currentUser, logInWithGoogle, logOut, errorMessage, isInitialized, isLoading }}>
+        <AuthContext.Provider value={{ currentUser, logInWithGoogle, logOut, errorMessage, isInitialized, isLoading, initialize }}>
             {children}
         </AuthContext.Provider>
     )
