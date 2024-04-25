@@ -55,6 +55,15 @@ exports.createpost = onDocumentCreated({
         return
     }
 
+    const userId = event.params.userId
+    const postId = event.params.postId
+    const postRef = firestoreDB.doc(`users/${userId}/posts/${postId}`)
+    
+    await postRef.update({
+        status: 'isProcessing',
+        updatedAt: Timestamp.now()
+    })
+
     const prompt = `## Post Content
 ${content}
 
@@ -65,13 +74,8 @@ Generate an illustration topic within 32 English characters based on above Post 
         const response = await result.response
         const topic = response.text()
 
-        const userId = event.params.userId
-        const postId = event.params.postId
-
-        const postRef = firestoreDB.doc(`users/${userId}/posts/${postId}`)
         await postRef.update({
             topic,
-            status: 'hasTopic',
             updatedAt: Timestamp.now()
         })
 
@@ -93,25 +97,34 @@ Generate an illustration topic within 32 English characters based on above Post 
             const filename = `${Date.now()}.png`
             const filePath = `users/${userId}/posts/${postId}/${filename}`
             const imageDataBuffer = Buffer.from(imageDataB64, 'base64')
-            
+
             const fileStorageRef = storageBucket.file(filePath)
             await fileStorageRef.save(imageDataBuffer, {
                 contentType: 'image/png',
             })
 
-            
+
             const downloadURL = await getDownloadURL(fileStorageRef)
 
             await postRef.update({
                 imageURL: downloadURL,
                 revisedPrompt: imageDataRevisedPrompt,
-                status: 'hasImage',
+                status: 'isFinished',
                 updatedAt: Timestamp.now()
             })
-    
+
             console.log('🥸 Post\'s image updated')
+        } else {
+            await postRef.update({
+                status: 'hasError',
+                updatedAt: Timestamp.now()
+            })
         }
     } catch (error) {
         console.log('🚨 Gemini error when the post is created: ', error)
+        await postRef.update({
+            status: 'hasError',
+            updatedAt: Timestamp.now()
+        })
     }
 })
