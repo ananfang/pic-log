@@ -1,11 +1,11 @@
 import { PostDoc } from "@/lib/common/firestore-types"
 import { ViewIcon } from "@chakra-ui/icons"
-import { Box, Button, Card, Image, Text, VStack } from "@chakra-ui/react"
+import { Box, Card, Image, Text, VStack } from "@chakra-ui/react"
 import PostDetailButton from "./PostDetailButton"
 
 function PostCoverCard({ post }: { post: PostDoc }) {
     return (
-        <Card width='122px' aspectRatio={1} overflow='hidden'>
+        <Card width='126px' aspectRatio={1} overflow='hidden'>
             {!!post.imageURL ?
                 (
                     <>{/* Has Image */}
