@@ -22,7 +22,7 @@ function PostFeed({ uid }: { uid: string }) {
     const fetchMorePosts = async () => {
         // console.log(`Fetching more posts: ${isFetchingRef.current} ${hasMore}`)
         if (isFetchingRef.current || !hasMore) return
-        
+
         // console.log(` Check: ${posts.length}, last: ${lastVisiblePost}`)
         let postQuery = query(postsCollection, orderBy(SharedDoc.Key.createdAt, 'desc'), limit(fetchLimit))
         if (!!lastVisiblePost) {
@@ -38,7 +38,15 @@ function PostFeed({ uid }: { uid: string }) {
                 setLastVisiblePost(docs[docs.length - 1])
 
                 const fetchedPosts = docs.map(doc => PostDoc.fromSnapshot(doc))
-                setPosts(prevPosts => [...prevPosts, ...fetchedPosts])
+                setPosts(prevPosts => {
+                    const newPostsMap = new Map(prevPosts.map(post => [post.id, post]));
+                    fetchedPosts.forEach(post => {
+                        if (!newPostsMap.has(post.id)) {
+                            newPostsMap.set(post.id, post);
+                        }
+                    });
+                    return Array.from(newPostsMap.values());
+                });
             }
 
             // console.log(`✅ Got ${docs.length} posts, last: ${docs[docs.length - 1]}, ${docs.length === fetchLimit}`)
@@ -58,7 +66,7 @@ function PostFeed({ uid }: { uid: string }) {
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (isMounted.current && posts.length < 21 && hasMore) {
             fetchMorePosts()
         }
