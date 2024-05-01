@@ -81,7 +81,7 @@ Generate an illustration topic within 32 English characters based on above Post 
 
         console.log('🤓 Post\'s topic updated')
 
-        const imagePrompt = `Artistic blend of Minimalism, Impressionism, and Anime, featuring a scene with minimalistic styling, a limited color palette, and a sparse background. Soft, blended Impressionist brushstrokes create a serene, emotive depiction about ${topic}`
+        const imagePrompt = `Artistic Anime, capturing simplicity and essence with a hint of cuteness. Use clean, simple lines and a soft, muted color palette, focusing on strong design elements without intricate details. The background should be sparse, enhancing the serene and emotive atmosphere of the theme:\n${topic}`
 
         const imageResult = await openaiViaHelicone.images.generate({
             model: 'dall-e-3',

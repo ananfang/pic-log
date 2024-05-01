@@ -41,7 +41,7 @@ function PostCoverCard({ post }: { post: PostDoc }) {
                             _hover={{ opacity: 1 }}
                         >
                             <VStack>
-                                <Text margin={1} noOfLines={2} userSelect='none'>
+                                <Text margin={1} noOfLines={2} userSelect='none' align='center'>
                                     {post.content}
                                 </Text>
                                 <ViewIcon />
@@ -51,29 +51,56 @@ function PostCoverCard({ post }: { post: PostDoc }) {
                     </>
                 ) :
                 (
-                    <>{/* No Image */}
-                        <Image
-                            objectFit='cover'
-                            src={placeholderURL}
-                        />
+                    post.status === 'hasError' ?
+                        (
+                            <>
+                                <Box
+                                    position='absolute'
+                                    top='0'
+                                    left='0'
+                                    right='0'
+                                    bottom='0'
+                                    bg='blackAlpha.500'
+                                    color='white'
+                                    display='flex'
+                                    alignItems='center'
+                                    justifyContent='center'
+                                >
+                                    <VStack>
+                                        <Text margin={1} noOfLines={2} userSelect='none' align='center'>
+                                            {post.content}
+                                        </Text>
+                                        <ViewIcon />
+                                    </VStack>
+                                    <PostDetailButton post={post} />
+                                </Box>
+                            </>
+                        ) :
+                        (
+                            <>{/* No Image */}
+                                <Image
+                                    objectFit='cover'
+                                    src={placeholderURL}
+                                />
 
-                        {/* Overlay Content */}
-                        <Box
-                            position='absolute'
-                            top='0'
-                            left='0'
-                            right='0'
-                            bottom='0'
-                            bg='blackAlpha.700'
-                            display='flex'
-                            alignItems='center'
-                            justifyContent='center'
-                        >
-                            <VStack>
-                                <CircularProgress isIndeterminate color='red.300' />
-                            </VStack>
-                        </Box>
-                    </>
+                                {/* Overlay Content */}
+                                <Box
+                                    position='absolute'
+                                    top='0'
+                                    left='0'
+                                    right='0'
+                                    bottom='0'
+                                    bg='blackAlpha.700'
+                                    display='flex'
+                                    alignItems='center'
+                                    justifyContent='center'
+                                >
+                                    <VStack>
+                                        <CircularProgress isIndeterminate color='red.300' />
+                                    </VStack>
+                                </Box>
+                            </>
+                        )
                 )
             }
 
