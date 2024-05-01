@@ -29,7 +29,8 @@ const TestingPostData = [
 
 class SharedDoc {
     static Key = {
-        createdAt: 'createdAt'
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
     }
 }
 
