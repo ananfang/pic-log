@@ -39,6 +39,7 @@ class PostDoc {
     content: string | undefined = undefined;
     imageURL: string | undefined = undefined;
     createdAt: Date | undefined = undefined;
+    updatedAt: Date | undefined = undefined;
 
     // Private constructor to prevent instantiation outside of factory methods
     private constructor(id: string | undefined, data: DocumentData) {
@@ -47,6 +48,9 @@ class PostDoc {
         this.imageURL = data.imageURL;
         if (data.createdAt instanceof Timestamp) {
             this.createdAt = data.createdAt.toDate();
+        }
+        if (data.updatedAt instanceof Timestamp) {
+            this.updatedAt = data.updatedAt.toDate();
         }
     }
 

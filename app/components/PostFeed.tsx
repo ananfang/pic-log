@@ -134,7 +134,7 @@ function PostFeed({ uid }: { uid: string }) {
                 <SimpleGrid columns={3} spacing='6px'>
                     {
                         [...newPosts, ...posts].map(post =>
-                            (<PostCoverCard key={post.id} post={post} />)
+                            (<PostCoverCard key={`${post.id}_${post.updatedAt?.getUTCMilliseconds() ?? -1}`} post={post} />)
                         )
                     }
                 </SimpleGrid>
