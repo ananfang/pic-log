@@ -29,7 +29,8 @@ const TestingPostData = [
 
 class SharedDoc {
     static Key = {
-        createdAt: 'createdAt'
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
     }
 }
 
@@ -38,14 +39,20 @@ class PostDoc {
     content: string | undefined = undefined;
     imageURL: string | undefined = undefined;
     createdAt: Date | undefined = undefined;
+    updatedAt: Date | undefined = undefined;
+    status: string | undefined = undefined;
 
     // Private constructor to prevent instantiation outside of factory methods
     private constructor(id: string | undefined, data: DocumentData) {
         this.id = id;
         this.content = data.content;
         this.imageURL = data.imageURL;
+        this.status = data.status;
         if (data.createdAt instanceof Timestamp) {
             this.createdAt = data.createdAt.toDate();
+        }
+        if (data.updatedAt instanceof Timestamp) {
+            this.updatedAt = data.updatedAt.toDate();
         }
     }
 

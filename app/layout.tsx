@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "Pic Log",
-  description: "Capture your words in a pic",
+  title: "image INK",
+  description: "Write It, See It.",
 };
 
 export default function RootLayout({
