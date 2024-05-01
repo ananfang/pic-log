@@ -12,6 +12,5 @@ const app = initializeApp({
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 })
 
-const analytics = getAnalytics(app)
 export const firebaseAuth = getAuth(app)
 export const firestoreDB = getFirestore(app)
