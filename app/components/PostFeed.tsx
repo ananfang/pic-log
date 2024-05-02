@@ -129,7 +129,11 @@ function PostFeed({ uid }: { uid: string }) {
                 next={fetchMorePosts}
                 hasMore={hasMore}
                 loader={<Text>Loading...</Text>}
-                endMessage={<Text>The end</Text>}
+                endMessage={(
+                    <VStack marginY={6}>
+                        <Text fontSize='xl' color="gray.500">Post and watch the magic unfold!</Text>
+                    </VStack>
+                )}
             >
                 <SimpleGrid columns={3} spacing='6px'>
                     {
